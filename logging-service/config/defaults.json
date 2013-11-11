@@ -1,0 +1,40 @@
+{
+	"db" : {
+		"url_help" : "URL to connect to MongoDB.",
+		"url" : "mongodb://localhost/ft-cloud",
+
+		"options_help" : "Options to pass to MongoDB driver.",
+		"options" : {
+
+		},
+
+		"shortLogLength_help" : "Length of time a message lives in the short log. Changing this value causes the short log to be re-indexed, which can take a long time and cause performance problems until it's finished. Beware.",
+		"shortLogLength" : "30d",
+
+		"shortLogRollupFrequency_help" : "The frequency at which updates are rolled up in the short log. If updates are received faster than this then they are collapsed into single updates.",
+		"shortLogRollupFrequency" : "1s",
+
+		"longLogRollupFrequency_help" : "The frequency at which updates are rolled up in the long log. If updates are received faster than this then they are collapsed into single updates.",
+		"longLogRollupFrequency" : "1m"
+	},
+	"servers" : {
+		"api" : {
+			"listeners" : [
+				{
+					"port": 8080
+				}
+			]
+		},
+		"logging" : {
+			"listeners" : [
+				{
+					"port" : 8080,
+					"ipv4" : true,
+					"ipv6": true
+				}
+			],
+			"maxPacketBytes_help" : "Maximum number of bytes allowed to be received in one log packet. Larger packets are discarded.",
+			"maxPacketBytes" : 512
+		}
+	}
+}

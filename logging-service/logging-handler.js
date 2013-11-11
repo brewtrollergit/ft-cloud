@@ -1,8 +1,11 @@
-var config = require('./config');
+var _ = require('underscore'),
+	config = require('./config'),
+	log = require('log4js').getLogger('logging-handler'),
+	model = require('./model');
 
 module.exports = function(msg, rinfo) {
 	if (msg.length > config.servers.logging.maxPacketBytes) {
-		console.log('Packet length of ' + msg.length + ' too large from ' + rinfo.address);
+		log.warn('Packet length of ' + msg.length + ' too large from ' + rinfo.address);
 		return;
 	}
 
@@ -10,11 +13,25 @@ module.exports = function(msg, rinfo) {
 		msg = JSON.parse(msg.toString('utf8'));
 	}
 	catch (e) {
-		console.log('Invalid JSON packet received from ' + rinfo.address);
+		log.warn('Invalid JSON packet received from ' + rinfo.address);
 		return;
 	}
 
+	if (!msg.i) {
+		log.warn('Invalid message: no ID.');
+		return;
+	}
 
+	if (!msg.v) {
+		log.warn('Invalid message: no version.');
+		return;
+	}
 
-	console.dir(msg);
+	model.saveLogMessage(msg, function(err) {
+		if (err) {
+			log.error('Failed to log message: ', err);
+		}
+
+		log.info('Message from ' + msg.i + '.');
+	});
 };

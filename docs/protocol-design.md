@@ -37,18 +37,18 @@ The following keys are required in every update message.
 Below is an example delta update from a FermTroller.
 
     {
-        v : 1,
-        i : '3w5e11264sg0g',
-        z1 : {
-            p : 38.2
+        "v" : 1,
+        "i" : "3w5e11264sg0g",
+        "z1" : {
+            "p" : 38.2
         },
-        z3 : {
-            s : 30.2,
-            o : 2
-        }
-        z4 : {
-            p : 26.1,
-            o : 1
+        "z3" : {
+            "s" : 30.2,
+            "o" : 2
+        },
+        "z4" : {
+            "p" : 26.1,
+            "o" : 1
         }
     }
 
@@ -75,49 +75,55 @@ Starting from the top, this update tells us the following:
 In a full update, the only difference is that every value is sent, instead of just the ones that have changed since last time.
 
     {
-        v : 1,
-        i : '3w5e11264sg0g',
-        z0 : {
-            n : 'Freezer',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "v" : 1,
+        "i" : "3w5e11264sg0g",
+        "z0" : {
+        	"name" : "Fermenter 1",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z2 : {
-            n : 'Ferm 1',
-            p : 24.1,
-            s : 26.3,
-            o : 2
+        "z1" : {
+        	"name" : "Fermenter 2",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z3 : {
-            n : 'Ferm 2',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z2" : {
+        	"name" : "Fermenter 3",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z4 : {
-            n : 'Ferm 3',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z3" : {
+        	"name" : "Fermenter 4",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z5 : {
-            n : 'Ferm 4',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z4" : {
+        	"name" : "Fermenter 5",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z6 : {
-            n : 'Room',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z5" : {
+        	"name" : "Fermenter 6",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z7 : {
-            n : 'Cooler',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z6" : {
+        	"name" : "Glycol Chiller",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
+        },
+        "z7" : {
+        	"name" : "Kegerator",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         }
     }
 
@@ -142,8 +148,7 @@ All packets should have their JSON minified before sending. This is as simple as
 
 The above Full FermTroller Update packet would look like the following when minified.
 
-    {v:1,i:'3w5e11264sg0g',z0:{n:'Freezer',p:38.2,s:37.1,o:2},z2:{n:'Ferm1',p:24.1,s:26.3,o:2},z3:{n:'Ferm2',p:38.2,s:37.1,o:2},z4:{n:'Ferm3',p:38.2,s:37.1,o:2},z5:{n:'Ferm4',p:38.2,s:37.1,o:2},z6:{n:'Room',p:38.2,s:37.1,o:2},z7:{n:'Cooler',p:38.2,s:37.1,o:2}}
-
+	{"v":1,"i":"3w5e11264sg0g","z0":{"name":"Fermenter 1","p":38.2,"s":40.1,"o":0},"z1":{"name":"Fermenter 2","p":38.2,"s":40.1,"o":0},"z2":{"name":"Fermenter 3","p":38.2,"s":40.1,"o":0},"z3":{"name":"Fermenter 4","p":38.2,"s":40.1,"o":0},"z4":{"name":"Fermenter 5","p":38.2,"s":40.1,"o":0},"z5":{"name":"Fermenter 6","p":38.2,"s":40.1,"o":0},"z6":{"name":"Glycol Chiller","p":38.2,"s":40.1,"o":0},"z7":{"name":"Kegerator","p":38.2,"s":40.1,"o":0}}
 
 # Wire Protocol
 
@@ -160,55 +165,55 @@ Example:
 Instead of sending this large packet containing 8 zones:
 
     {
-        v : 1,
-        i : '3w5e11264sg0g',
-        z0 : {
-            n : 'Freezer',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "v" : 1,
+        "i" : "3w5e11264sg0g",
+        "z0" : {
+        	"name" : "Fermenter 1",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z1 : {
-            n : 'Ferm 1',
-            p : 24.1,
-            s : 26.3,
-            o : 2
+        "z1" : {
+        	"name" : "Fermenter 2",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z2 : {
-            n : 'Ferm 1',
-            p : 24.1,
-            s : 26.3,
-            o : 2
+        "z2" : {
+        	"name" : "Fermenter 3",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z3 : {
-            n : 'Ferm 2',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z3" : {
+        	"name" : "Fermenter 4",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z4 : {
-            n : 'Ferm 3',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z4" : {
+        	"name" : "Fermenter 5",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z5 : {
-            n : 'Ferm 4',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z5" : {
+        	"name" : "Fermenter 6",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z6 : {
-            n : 'Room',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z6" : {
+        	"name" : "Glycol Chiller",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z7 : {
-            n : 'Cooler',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z7" : {
+        	"name" : "Kegerator",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         }
     }
 
@@ -217,61 +222,61 @@ Instead send two packets containing only 4 zones each.
 First packet:
 
     {
-        v : 1,
-        i : '3w5e11264sg0g',
-        z0 : {
-            n : 'Freezer',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "v" : 1,
+        "i" : "3w5e11264sg0g",
+        "z0" : {
+        	"name" : "Fermenter 1",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z1 : {
-            n : 'Ferm 1',
-            p : 24.1,
-            s : 26.3,
-            o : 2
+        "z1" : {
+        	"name" : "Fermenter 2",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z2 : {
-            n : 'Ferm 1',
-            p : 24.1,
-            s : 26.3,
-            o : 2
+        "z2" : {
+        	"name" : "Fermenter 3",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z3 : {
-            n : 'Ferm 2',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z3" : {
+        	"name" : "Fermenter 4",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         }
     }
     
 Second packet:
 
     {
-        v : 1,
-        i : '3w5e11264sg0g',
-        z4 : {
-            n : 'Ferm 3',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "v" : 1,
+        "i" : "3w5e11264sg0g",
+        "z4" : {
+        	"name" : "Fermenter 5",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z5 : {
-            n : 'Ferm 4',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z5" : {
+        	"name" : "Fermenter 6",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z6 : {
-            n : 'Room',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z6" : {
+        	"name" : "Glycol Chiller",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         },
-        z7 : {
-            n : 'Cooler',
-            p : 38.2,
-            s : 37.1,
-            o : 2
+        "z7" : {
+        	"name" : "Kegerator",
+            "p" : 38.2,
+            "s" : 40.1,
+            "o" : 0
         }
     }
