@@ -74,6 +74,29 @@ function initialize(callback) {
 }
 
 /**
+ * Set the value at update['path'] to the value at object.path if it
+ * exists.
+ * For a path like a.b.c this function will set
+ * update['a.b.c'] = object.a.b.c if object.a.b.c exists.
+ * @param update
+ * @param object
+ * @param path
+ */
+function set(update, object, path) {
+	var found = _.every(path.split('.'), function(path) {
+		if (!object.hasOwnProperty(path)) {
+			return false;
+		}
+		object = object[path];
+		return true;
+	});
+	if (!found) {
+		return;
+	}
+	update[path] = object;
+}
+
+/**
  * Save a log message to the database. This function saves the message to the short log,
  * expiring any messages that need to be expired, and also updates or increases the
  * long log.
@@ -82,11 +105,11 @@ function initialize(callback) {
  */
 function saveLogMessage(message, callback) {
 	message.i = message.i.toLowerCase();
-	delete message.createdAt;
-	var createdAt = new Date();
 
-	var shortLogRollupDate = new Date(createdAt.getTime() - shortLogRollupFrequency);
-	var longLogRollupDate = new Date(createdAt.getTime() - longLogRollupFrequency);
+	var now = new Date();
+
+	var shortLogRollupDate = new Date(now - shortLogRollupFrequency);
+	var longLogRollupDate = new Date(now - longLogRollupFrequency);
 
 	var shortLogQuery = {
 		createdAt : { $gte : shortLogRollupDate },
@@ -99,9 +122,22 @@ function saveLogMessage(message, callback) {
 	};
 
 	var update = {
-		$set : message,
-		$setOnInsert : { createdAt : createdAt }
+		$set : {
+			updatedAt : now,
+			i : message.i,
+			v : message.v
+		},
+		$setOnInsert : { createdAt : now }
 	};
+
+	_.each(message, function(value, key) {
+		if (/^z\d+$/.test(key)) {
+			set(update.$set, message, key + '.n');
+			set(update.$set, message, key + '.p');
+			set(update.$set, message, key + '.s');
+			set(update.$set, message, key + '.o');
+		}
+	});
 
 	var options = {
 		upsert : true

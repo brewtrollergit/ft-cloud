@@ -36,5 +36,16 @@
 			"maxPacketBytes_help" : "Maximum number of bytes allowed to be received in one log packet. Larger packets are discarded.",
 			"maxPacketBytes" : 512
 		}
+	},
+	"log4js" : {
+		"appenders" : [
+			{
+				"type" : "console"
+			}
+		],
+		"levels" : {
+			"[default]" : "INFO",
+			"logging-handler" : "INFO"
+		}
 	}
 }

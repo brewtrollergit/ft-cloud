@@ -4,9 +4,15 @@ var apiHandler = require('./api-handler'),
 	model = require('./model'),
 	dgram = require('dgram'),
 	http = require('http'),
+	log4js = require('log4js'),
 	log = require('log4js').getLogger(),
 	loggingHandler = require('./logging-handler'),
 	package = require('./package.json');
+
+function configureLogging(callback) {
+	log4js.configure(config.log4js);
+	setImmediate(callback);
+}
 
 function printBanner(callback) {
 	log.info();
@@ -69,6 +75,7 @@ function startLoggingListeners(callback) {
 }
 
 async.series([
+	configureLogging,
 	printBanner,
 	model.initialize,
 	startApiListeners,
