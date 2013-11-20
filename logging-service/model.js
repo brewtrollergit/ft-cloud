@@ -61,8 +61,10 @@ function initialize(callback) {
 			return callback(err);
 		}
 
-		shortLog = db.collection('shortLog');
-		longLog = db.collection('longLog');
+		module.exports.shortLog = db.collection('shortLog');
+		module.exports.longLog = db.collection('longLog');
+		shortLog = module.exports.shortLog;
+		longLog = module.exports.longLog;
 
 		async.series([
 			ensureShortLogTtlIndex,
@@ -149,7 +151,32 @@ function saveLogMessage(message, callback) {
 	], callback);
 }
 
+function findLogMessagesInDateRange(i, from, to, callback) {
+	// find messages that match the range in the long log, sorted by createdAt
+	// find messages that match the range in the short log, sorted by createdAt
+	// merge the lists and sort by createdAt
+	shortLog
+		.find({
+			i : i,
+			createdAt : {
+				$gte : from,
+				$lte : to
+			}
+		})
+		.sort({
+			createdAt : -1
+		})
+		.toArray(function(err, docs) {
+			if (err) {
+				return callback(err);
+			}
+			console.log(docs.length);
+			return callback(null, docs);
+		});
+}
+
 module.exports = {
 	saveLogMessage : saveLogMessage,
+	findLogMessagesInDateRange : findLogMessagesInDateRange,
 	initialize : initialize
 };
