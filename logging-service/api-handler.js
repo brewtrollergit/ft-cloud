@@ -1,4 +1,5 @@
-var express = require('express'),
+var _ = require('underscore'),
+	express = require('express'),
 	log = require('log4js').getLogger('api-handler'),
 	rtmTime = require('rtm-time'),
 	model = require('./model');
@@ -22,20 +23,38 @@ app.get('/v0/controllers/:id/logs', function(req, res) {
 	var to = new Date(req.query.to || Date.now());
 	var from = new Date(req.query.from || new Date(to.getTime() - rtmTime.parse('1h')).getTime());
 
+	function extend_(memo, o) {
+		for (var key in o) {
+			if (!o.hasOwnProperty(key)) {
+				continue;
+			}
+			var val = o[key];
+			if (typeof val === 'object' && !(val instanceof Date)) {
+				if (!memo[key]) {
+					memo[key] = {};
+				}
+				extend_(memo[key], val);
+			}
+			else {
+				memo[key] = val;
+			}
+		}
+	}
+
+	function extend(objects) {
+		var memo = {};
+		objects.forEach(function(o) {
+			extend_(memo, o);
+		});
+		return memo;
+	}
+
 	var map = function() {
 		emit(Math.floor(this.createdAt.getTime() / interval), this);
 	};
 
 	var reduce = function(key, values) {
-//		var result = {};
-//		for (var i = 0; i < values.length; i++) {
-//			var value = values[i];
-//			for (var key in value) {
-//
-//			}
-//		}
-//		return result;
-		return values[0];
+		return extend(values);
 	};
 
 	model.shortLog.mapReduce(
@@ -48,7 +67,9 @@ app.get('/v0/controllers/:id/logs', function(req, res) {
 				createdAt : { $gte : from, $lte : to }
 			},
 			scope : {
-				interval : rtmTime.parse(interval)
+				interval : rtmTime.parse(interval),
+				extend : extend,
+				extend_ : extend_
 			},
 			sort : { createdAt : 1 }
 		},
